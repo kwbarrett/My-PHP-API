@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/kens_api/users" id="userForm" method="post">
+        <div>
+            <label for="username">Name</label>
+            <input type="text" name="username" id="username">
+        </div>
+        <div>
+            <label for="user_email">Email</label>
+            <input type="text" name="user_email" id="user_email">
+        </div>
+        <div>
+            <input type="hidden" name="user_status" id="user_status" value="1">
+            <!-- <input type="submit" value="Add user"> -->
+            <button id="createUser">Add user</button>
+        </div>
+    </form>
+    <script>
+        
+        let submitButton = document.getElementById( 'createUser' );
+        submitButton.addEventListener( "click", function( event ){
+            event.preventDefault();
+            let userForm = document.getElementById( 'userForm' );
+            let username = userForm.username.value;
+            let user_email = userForm.user_email.value;
+            let user_status = userForm.user_status.value;
+            const user = {
+                username: username,
+                user_email: user_email,
+                user_status: user_status
+            }
+            console.log( user );
+            const options = {
+                method: 'POST',
+                body: JSON.stringify(user),
+                redirect: 'follow',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            // fetch('http://localhost/kens_api/users', options)
+            //     .then(response => response.json())
+            //     .then(data => console.log(data))
+            
+            fetch( 'http://localhost/kens_api/users', options )
+                .then( function( response ){
+                    console.log( response );
+                    if( response.status == '200' ){
+                        window.location.href = "list.php";
+                    }
+                    return response.json();
+                })
+                .then( function( data ){
+                    console.log( data );
+                })
+        }) 
+    </script>
+</body>
+</html>
